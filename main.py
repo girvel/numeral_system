@@ -23,22 +23,14 @@ def convert_to_base(number, alphabet):
     return ''.join(alphabet[n] for n in digits) + postfix
 
 
-# noinspection PyDefaultArgument
-def generate_alphabet(
-    vowels='a i e o u'.split(),
-    consonants=zip(
-        'b d v g j z'.split(),
-        'p t f k sh s'.split(),
-    ),
-):
+def generate_alphabet(base, sequences):
     result = []
-    vowels_i = 0
 
-    for pair in consonants:
-        for c in pair:
-            result.append(c + vowels[vowels_i])
-
-            vowels_i = (vowels_i + 1) % len(vowels)
+    for i in range(base):
+        word = ''
+        for sequence in sequences:
+            word += sequence[i % len(sequence)]
+        result.append(word)
 
     return result
 
@@ -66,4 +58,7 @@ def visualize(
 
 
 if __name__ == '__main__':
-    visualize(generate_alphabet())
+    visualize(generate_alphabet(12, [
+        'b p d t v f g k j sh z s'.split(),
+        'a i e o u'.split(),
+    ]))
