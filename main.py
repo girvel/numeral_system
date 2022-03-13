@@ -7,8 +7,40 @@ def split_to_base(n, b):
         n //= b
     return digits[::-1]
 
+
 def convert_to_base(number, alphabet):
-    return ''.join(alphabet[n] for n in split_to_base(number, len(alphabet)))
+    digits = split_to_base(number, len(alphabet))
+    if digits[-3:] == [0, 0, 0]:
+        power = 0
+        while digits[-1] == 0:
+            power += 1
+            digits.pop()
+
+        postfix = 'ro' + convert_to_base(power, alphabet)
+    else:
+        postfix = ''
+
+    return ''.join(alphabet[n] for n in digits) + postfix
+
+
+# noinspection PyDefaultArgument
+def generate_alphabet(
+    vowels='a i e o u'.split(),
+    consonants=zip(
+        'b d v g j z'.split(),
+        'p t f k sh s'.split(),
+    ),
+):
+    result = []
+    vowels_i = 0
+
+    for pair in consonants:
+        for c in pair:
+            result.append(c + vowels[vowels_i])
+
+            vowels_i = (vowels_i + 1) % len(vowels)
+
+    return result
 
 
 def visualize(alphabet):
@@ -30,4 +62,4 @@ Some nouns:
 
 
 if __name__ == '__main__':
-    visualize('plap be tib dmo fat ve knid go shaf jre siv zo'.split())
+    visualize(generate_alphabet())
