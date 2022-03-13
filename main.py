@@ -10,7 +10,7 @@ def split_to_base(n, b):
 
 def convert_to_base(number, alphabet):
     digits = split_to_base(number, len(alphabet))
-    if digits[-3:] == [0, 0, 0]:
+    if digits[-2:] == [0, 0]:
         power = 0
         while digits[-1] == 0:
             power += 1
@@ -43,22 +43,26 @@ def generate_alphabet(
     return result
 
 
-def visualize(alphabet):
+def visualize(
+    alphabet,
+    units={
+        'mile': 1440,
+        'minute': 60,
+        'hour': 3600,
+        'day': 86400,
+        'week': 86400 * 7,
+        'month': 86400 * 30,
+        'year': 86400 * 360,
+    },
+):
     for i, word in enumerate(alphabet):
         print(f'{i}. {word[0].capitalize()} - {word}')
 
     convert = lambda n: convert_to_base(n, alphabet)
 
-    print()
-    print(fr"""
-
-Some nouns:
-- kilometer is {convert(1000)}
-- minute is {convert(60)}
-- hour is {convert(3600)}
-- day is {convert(86400)}
-
-    """.strip())
+    print('\nSome nouns:')
+    for original, translation in units.items():
+        print(f'- {original} is {convert(translation)}')
 
 
 if __name__ == '__main__':
